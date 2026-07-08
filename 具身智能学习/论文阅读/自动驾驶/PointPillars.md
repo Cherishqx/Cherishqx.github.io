@@ -1,0 +1,68 @@
+# PointPillars: Fast Encoders for Object Detection from Point Clouds
+
+！3D目标检测、点云转伪图像、2D卷积层
+
+2019\.5\.7
+
+code：https://github\.com/nutonomy/second\.pytorch
+
+提出了PointPillars，一种新型编码器，它利用PointNets来学习以垂直列（柱子）组织的点云的表示。
+
+一些最近的方法：
+
+1\.3D卷积
+
+2\.投影成图像
+
+3\.从鸟瞰图查看激光雷达点云（比例模糊性少、几乎没有遮挡，但是很稀疏）
+
+## 贡献
+
+我们提出了**一种新的点云编码器和网络PointPillars**，它在点云上运行，以实现3D对象检测网络的端到端训练。
+
+我们展示了如何将柱上的所有计算都设置为密集的2D卷积，从而实现62 Hz的推理。
+
+我们在KITTI数据集上进行实验，并在BEV和3D基准上展示了汽车、行人和骑自行车者的最新结果。
+
+我们进行了几项消融研究，以检查实现强大检测性能的关键因素。
+
+## 模型框架
+
+![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OTZlYjk0ZDk1YWI2MTc4MTE0N2Y1YmEyNDEzZTcyMjNfNDViNjRmNTg5YjEzY2YxNTRkZDM2MDRmMDVjMWNmMjVfSUQ6NzY1OTc2ODkxODc2MDMxMTc4MF8xNzgzNDk2Njc2OjE3ODM1ODMwNzZfVjM)
+
+### 框架包括三个主要部分：
+
+（1）特征编码器，将点云编码为稀疏的伪图像（sparse pseudo\-image）
+
+（2）2D卷积骨架，将伪图像处理为高层次表达
+
+（3）检测头，检测和回归3D框
+
+### 点云转换为伪图像
+
+1\.将点云在x\-y平面上离散化为均匀间隔的网格，生成一组柱体P（pillars），其中\|P\|=B（B为柱体的总数）。这里不需要超参数来控制z维度的分箱（binning）。
+
+2\.点特征增强：
+
+- xc,yc,zc ：点到该柱体内所有点的算术平均值的距离
+- xp,yp ：点到柱体 x,y  中心的偏移量
+
+增强后的激光雷达点 l 变为 D=9 维（原始4维：x,y,z,r  \+ 新增5维）
+
+3\.处理点云稀疏性。对每个样本的**非空柱体数量**上限 P 和**每个柱体的点数**上限 N 实际限制，从而创建大小为（D,P,N）的稠密张量。点数多了随机采样，少了则零填充。
+
+4\.PointNet简化编码，对每个点应用线性层、BatchNorm、ReLU，生成（C,P,N）维度的张量。在通道上进行max操作，以创建大小为（C，P）的输出张量。
+
+5\.将编码后的特征散射回原始柱体位置，创建大小为 \(*C*,*H*,*W*\)  的伪图像，其中 *H*  和 *W*  表示画布的高度和宽度。
+
+### Backbone
+
+采用与 VoxelNet 类似的骨干网络，如上图所示。该骨干网络包含两个子网络：
+
+自顶向下网络（Top\-down network）：产生空间分辨率逐渐减小的特征
+
+第二网络：对自顶向下的特征进行上采样和拼接
+
+### 检测头
+
+使用单镜头探测器（SSD）设置执行3D物体检测。
