@@ -2,7 +2,7 @@
 
 > 参考：https://github\.com/sou350121/VLA\-Handbook/blob/main/theory/vla\-core/vla\_arch\.md
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MjZlNmY1ZjJiNTAyYzJkZWM5ODFmMjA3NWU1MjZlOGRfNDllOGZhOGJiYTQ4YWZiNDFjZGY4MjIyYjMxMTA3MGJfSUQ6NzY1NzEyNjA4NzUwMzk4OTcyN18xNzgyOTEyMzA4OjE3ODI5OTg3MDhfVjM)
+![Image](/具身智能学习/src/通用vla框架.png)
 
 ## Vision Encoder
 
@@ -76,5 +76,3 @@ MLP/Tokenizer
 - **Token Head: **RT\-2, Fast           \-\-\-离散化为256bins
 - **Diffusion Head: **RDT, Octo       \-\-\-DDPM去噪
 - **Flow Head:** pi0, WALL\-OSS        \-\-\-Flow Matching
-
-

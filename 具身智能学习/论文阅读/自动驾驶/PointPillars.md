@@ -28,7 +28,7 @@ code：https://github\.com/nutonomy/second\.pytorch
 
 ## 模型框架
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OTZlYjk0ZDk1YWI2MTc4MTE0N2Y1YmEyNDEzZTcyMjNfNDViNjRmNTg5YjEzY2YxNTRkZDM2MDRmMDVjMWNmMjVfSUQ6NzY1OTc2ODkxODc2MDMxMTc4MF8xNzgzNDk2Njc2OjE3ODM1ODMwNzZfVjM)
+![Image](/具身智能学习/src/pointpillars.png)
 
 ### 框架包括三个主要部分：
 
