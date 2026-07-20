@@ -2,7 +2,7 @@
 
 VAD、GenAD 推理输出结构：
 
-![Image](src/推理输出.png)
+![Image](/src/推理输出.png)
 
 ## 整体结构
 
